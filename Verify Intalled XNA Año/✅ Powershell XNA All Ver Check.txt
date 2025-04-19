@@ -1,0 +1,29 @@
+Powershell Sistemas x64= 64 Bit
+Get-ItemProperty -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\XNA\Framework\v4.0" -Name "Installed" -ErrorAction SilentlyContinue
+
+Script Verificador todas las versiones:
+
+# Lista de versiones de XNA Framework a verificar
+$versions = @("v1.0", "v2.0", "v3.0", "v3.1", "v4.0")
+
+# Iterar sobre cada versión
+foreach ($version in $versions) {
+    $path = "HKLM:\SOFTWARE\Microsoft\XNA\Framework\$version"
+    $wow64Path = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\XNA\Framework\$version"
+
+    # Verificar la clave en la ruta principal
+    $result = Get-ItemProperty -Path $path -Name "Installed" -ErrorAction SilentlyContinue
+    if ($result) {
+        Write-Host "XNA Framework $version está instalado."
+    }
+    else {
+        # Verificar la clave en WOW6432Node
+        $resultWow64 = Get-ItemProperty -Path $wow64Path -Name "Installed" -ErrorAction SilentlyContinue
+        if ($resultWow64) {
+            Write-Host "XNA Framework $version está instalado (WOW6432Node)."
+        }
+        else {
+            Write-Host "XNA Framework $version NO está instalado."
+        }
+    }
+}
