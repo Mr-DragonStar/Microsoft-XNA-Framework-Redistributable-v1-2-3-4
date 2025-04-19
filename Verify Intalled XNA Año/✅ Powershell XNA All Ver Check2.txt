@@ -1,0 +1,17 @@
+# Verifica las versiones instaladas en el registro
+$XNAPath64 = "HKLM:\SOFTWARE\Microsoft\XNA\Framework"
+$XNAPath32 = "HKLM:\SOFTWARE\WOW6432Node\Microsoft\XNA\Framework"
+
+Write-Host "=== Versiones de XNA Framework instaladas ===" -ForegroundColor Cyan
+
+if (Test-Path $XNAPath64) {
+    Get-ChildItem $XNAPath64 | ForEach-Object { Write-Host "Versión encontrada:" $_.PSChildName -ForegroundColor Green }
+} else {
+    Write-Host "No se encontró XNA Framework (64-bit)." -ForegroundColor Yellow
+}
+
+if (Test-Path $XNAPath32) {
+    Get-ChildItem $XNAPath32 | ForEach-Object { Write-Host "Versión encontrada (32-bit):" $_.PSChildName -ForegroundColor Green }
+} else {
+    Write-Host "No se encontró XNA Framework (32-bit)." -ForegroundColor Yellow
+}
